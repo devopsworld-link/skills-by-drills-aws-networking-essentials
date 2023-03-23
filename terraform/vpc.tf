@@ -63,7 +63,7 @@ locals {
         from_port   = 22
         to_port     = 22
         protocol    = "tcp"
-        cidr_block  = "10.0.0.0/22"
+        cidr_block  = var.vpc_cidr_block
       },
       {
         rule_number = 110
@@ -71,7 +71,7 @@ locals {
         icmp_code   = -1
         icmp_type   = -1
         protocol    = "icmp"
-        cidr_block  = "10.0.0.0/22"
+        cidr_block  = var.vpc_cidr_block
       },
     ]
     private_outbound = [
@@ -81,7 +81,7 @@ locals {
         from_port   = 22
         to_port     = 22
         protocol    = "tcp"
-        cidr_block  = "10.0.0.0/22"
+        cidr_block  = var.vpc_cidr_block
       },
       {
         rule_number = 110
@@ -89,7 +89,7 @@ locals {
         icmp_code   = -1
         icmp_type   = -1
         protocol    = "icmp"
-        cidr_block  = "10.0.0.0/22"
+        cidr_block  = var.vpc_cidr_block
       },
     ]
   }
@@ -99,15 +99,15 @@ locals {
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = var.vpc_name
+  name = "my-vpc"
   cidr = var.vpc_cidr_block
 
   azs             = ["${var.region}a", "${var.region}b"]
   public_subnets  = var.vpc_public_subnets
   private_subnets = var.vpc_private_subnets
 
-  public_subnet_names  = var.vpc_public_subnet_names
-  private_subnet_names = var.vpc_private_subnet_names
+  public_subnet_names  = ["Public Subnet"]
+  private_subnet_names = ["Private Subnet 1", "Private Subnet 2"]
 
   public_dedicated_network_acl  = true
   public_inbound_acl_rules      = concat(local.network_acls["default_inbound"], local.network_acls["public_inbound"])
