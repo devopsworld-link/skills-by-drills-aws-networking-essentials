@@ -34,5 +34,5 @@ Don't forget to destroy the infrastructure when you're done with your experiment
 To do that, execute the following command and type `yes` when it asks for confirmation. 
 > Make sure you run the command inside the terraform directory 
 ```
-terraform destroy
+terraform destroy --var-file variables.tfvars
 ```

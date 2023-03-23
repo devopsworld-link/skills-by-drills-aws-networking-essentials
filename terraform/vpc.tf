@@ -33,7 +33,7 @@ locals {
         rule_number = 110
         rule_action = "allow"
         icmp_code   = -1
-        icmp_type   = 8
+        icmp_type   = -1
         protocol    = "icmp"
         cidr_block  = "0.0.0.0/0"
       },
@@ -51,7 +51,7 @@ locals {
         rule_number = 110
         rule_action = "allow"
         icmp_code   = -1
-        icmp_type   = 8
+        icmp_type   = -1
         protocol    = "icmp"
         cidr_block  = "0.0.0.0/0"
       },
@@ -69,7 +69,7 @@ locals {
         rule_number = 110
         rule_action = "allow"
         icmp_code   = -1
-        icmp_type   = 8
+        icmp_type   = -1
         protocol    = "icmp"
         cidr_block  = "10.0.0.0/22"
       },
@@ -87,7 +87,7 @@ locals {
         rule_number = 110
         rule_action = "allow"
         icmp_code   = -1
-        icmp_type   = 8
+        icmp_type   = -1
         protocol    = "icmp"
         cidr_block  = "10.0.0.0/22"
       },
@@ -99,15 +99,15 @@ locals {
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "my-vpc"
-  cidr = "10.0.0.0/22"
+  name = var.vpc_name
+  cidr = var.vpc_cidr_block
 
   azs             = ["${var.region}a", "${var.region}b"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  public_subnets  = ["10.0.0.0/24"]
+  public_subnets  = var.vpc_public_subnets
+  private_subnets = var.vpc_private_subnets
 
-  public_subnet_names  = ["Public Subnet"]
-  private_subnet_names = ["Private Subnet 1", "Private Subnet 2"]
+  public_subnet_names  = var.vpc_public_subnet_names
+  private_subnet_names = var.vpc_private_subnet_names
 
   public_dedicated_network_acl  = true
   public_inbound_acl_rules      = concat(local.network_acls["default_inbound"], local.network_acls["public_inbound"])
